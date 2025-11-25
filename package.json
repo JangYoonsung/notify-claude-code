@@ -1,0 +1,45 @@
+{
+  "name": "claude-monitor",
+  "version": "1.0.0",
+  "description": "Claude Code Advanced Notification System - Monitor sessions and deliver notifications about cost, tokens, and code changes",
+  "main": "dist/cli.js",
+  "bin": {
+    "claude-monitor": "./dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "prepublishOnly": "npm run build",
+    "test": "npm run build && node dist/cli.js --status"
+  },
+  "keywords": [
+    "claude",
+    "claude-code",
+    "notification",
+    "monitoring",
+    "session",
+    "cost-tracking",
+    "tokens"
+  ],
+  "author": "jangyoonsung",
+  "license": "MIT",
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "os": [
+    "darwin"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jangyoonsung/claude-monitor.git"
+  },
+  "files": [
+    "dist/",
+    "scripts/",
+    "README.md",
+    "CLAUDE.md"
+  ],
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  }
+}

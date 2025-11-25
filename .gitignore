@@ -16,8 +16,15 @@ __pycache__/
 *.so
 .Python
 *.egg-info/
-dist/
 build/
+
+# Node.js
+node_modules/
+dist/
+*.tsbuildinfo
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
 
 # Environment
 .env

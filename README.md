@@ -2,17 +2,48 @@
 
 Claude Codeのセッション情報（コスト、トークン使用量、コード変更など）を自動収集し、macOS通知を配信するシステム
 
+## インストール
+
+### NPMパッケージとして使用（推奨）
+
+```bash
+# グローバルインストール
+npm install -g claude-monitor
+
+# または、npx経由で直接実行
+npx claude-monitor --status
+```
+
+### ローカル開発
+
+```bash
+# リポジトリをクローン
+cd ~/.claude-monitor
+
+# 依存関係をインストール
+npm install
+
+# ビルド
+npm run build
+
+# ローカルでリンク
+npm link
+
+# 使用
+claude-monitor --status
+```
+
 ## クイックスタート
 
 ```bash
 # セッション完了通知を送信
-~/.claude/scripts/notification_system.py
+npx claude-monitor
 
 # 詳細な通知を送信
-~/.claude/scripts/notification_system.py --mode detailed
+npx claude-monitor --mode detailed
 
 # ステータス確認
-~/.claude/scripts/notification_system.py --status
+npx claude-monitor --status
 ```
 
 ## 主な機能
@@ -75,38 +106,38 @@ Claude Codeのセッション情報（コスト、トークン使用量、コー
 ### 通知の送信
 ```bash
 # セッション完了通知（compact）
-~/.claude/scripts/notification_system.py
+npx claude-monitor
 
 # 詳細通知
-~/.claude/scripts/notification_system.py --mode detailed
+npx claude-monitor --mode detailed
 
 # 全通知
-~/.claude/scripts/notification_system.py --mode all
+npx claude-monitor --mode all
 
 # カスタム通知
-~/.claude/scripts/notification_system.py --custom "タイトル" "メッセージ"
+npx claude-monitor --custom "タイトル" "メッセージ"
 
 # デバッグモード
-~/.claude/scripts/notification_system.py --debug
+npx claude-monitor --debug
 ```
 
 ### 設定管理
 ```bash
 # ステータス確認
-~/.claude/scripts/notification_system.py --status
+npx claude-monitor --status
 
 # 通知を有効化/無効化
-~/.claude/scripts/notification_system.py --enable
-~/.claude/scripts/notification_system.py --disable
+npx claude-monitor --enable
+npx claude-monitor --disable
 
 # モード変更
-~/.claude/scripts/notification_system.py --mode compact
+npx claude-monitor --mode compact
 ```
 
 ### セッション情報の確認
 ```bash
 # 現在のセッション情報を表示
-~/.claude/scripts/session_monitor.py
+python3 ~/.claude-monitor/scripts/session_monitor.py
 
 # 通知ログを確認
 tail -20 ~/.claude-monitor/logs/notifications.log
@@ -159,15 +190,44 @@ tail -20 ~/.claude-monitor/logs/sessions_$(date +%Y%m).log
 }
 ```
 
-## シェルエイリアス設定（推奨）
+## Claude Code Hooks設定
+
+`~/.claude/settings.json`に以下を追加して、セッション終了時に自動通知を受け取れます：
+
+```json
+{
+  "hooks": {
+    "Stop": [{
+      "hooks": [{
+        "type": "command",
+        "command": "npx claude-monitor --mode compact"
+      }]
+    }],
+    "SessionEnd": [{
+      "hooks": [{
+        "type": "command",
+        "command": "npx claude-monitor --mode detailed"
+      }]
+    }],
+    "Notification": [{
+      "hooks": [{
+        "type": "command",
+        "command": "npx claude-monitor --custom 'ユーザー入力が必要です' 'Claude Codeが待機中です'"
+      }]
+    }]
+  }
+}
+```
+
+## シェルエイリアス設定（オプション）
 
 `~/.zshrc` または `~/.bashrc` に追加：
 
 ```bash
 # 通知システムエイリアス
-alias cn='~/.claude/scripts/notification_system.py'
-alias cnd='~/.claude/scripts/notification_system.py --mode detailed'
-alias cns='~/.claude/scripts/notification_system.py --status'
+alias cn='npx claude-monitor'
+alias cnd='npx claude-monitor --mode detailed'
+alias cns='npx claude-monitor --status'
 ```
 
 使用例：
