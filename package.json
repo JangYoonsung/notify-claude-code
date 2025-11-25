@@ -1,10 +1,10 @@
 {
-  "name": "claude-monitor",
+  "name": "notify-claude-code",
   "version": "1.0.0",
   "description": "Claude Code Advanced Notification System - Monitor sessions and deliver notifications about cost, tokens, and code changes",
   "main": "dist/cli.js",
   "bin": {
-    "claude-monitor": "./dist/cli.js"
+    "notify-claude-code": "./dist/cli.js"
   },
   "scripts": {
     "build": "tsc",
@@ -30,7 +30,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/jangyoonsung/claude-monitor.git"
+    "url": "https://github.com/JangYoonsung/notify-claude-code.git"
   },
   "files": [
     "dist/",
