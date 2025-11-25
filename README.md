@@ -8,10 +8,10 @@ Claude Codeのセッション情報（コスト、トークン使用量、コー
 
 ```bash
 # npx経由で直接実行
-npx claude-monitor --status
+npx notify-claude-code --status
 
 # グローバルインストール
-npm install -g claude-monitor
+npm install -g notify-claude-code
 ```
 
 ### ローカル開発
@@ -27,13 +27,13 @@ npm link
 
 ```bash
 # セッション完了通知
-npx claude-monitor
+npx notify-claude-code
 
 # 詳細通知
-npx claude-monitor --mode detailed
+npx notify-claude-code --mode detailed
 
 # ステータス確認
-npx claude-monitor --status
+npx notify-claude-code --status
 ```
 
 ## 主な機能
@@ -65,13 +65,13 @@ npx claude-monitor --status
     "Stop": [{
       "hooks": [{
         "type": "command",
-        "command": "npx claude-monitor --mode compact"
+        "command": "npx notify-claude-code --mode compact"
       }]
     }],
     "SessionEnd": [{
       "hooks": [{
         "type": "command",
-        "command": "npx claude-monitor --mode detailed"
+        "command": "npx notify-claude-code --mode detailed"
       }]
     }]
   }
@@ -82,18 +82,18 @@ npx claude-monitor --status
 
 ```bash
 # 通知の送信
-npx claude-monitor                              # compact通知
-npx claude-monitor --mode detailed              # 詳細通知
-npx claude-monitor --mode all                   # 全通知
-npx claude-monitor --custom "タイトル" "メッセージ"  # カスタム通知
+npx notify-claude-code                              # compact通知
+npx notify-claude-code --mode detailed              # 詳細通知
+npx notify-claude-code --mode all                   # 全通知
+npx notify-claude-code --custom "タイトル" "メッセージ"  # カスタム通知
 
 # 設定管理
-npx claude-monitor --status                     # ステータス確認
-npx claude-monitor --enable                     # 有効化
-npx claude-monitor --disable                    # 無効化
+npx notify-claude-code --status                     # ステータス確認
+npx notify-claude-code --enable                     # 有効化
+npx notify-claude-code --disable                    # 無効化
 
 # デバッグ
-npx claude-monitor --debug                      # デバッグモード
+npx notify-claude-code --debug                      # デバッグモード
 ```
 
 ## 設定ファイル
@@ -152,13 +152,13 @@ brew install terminal-notifier
 
 ```bash
 # ステータス確認
-npx claude-monitor --status
+npx notify-claude-code --status
 
 # テスト通知
-npx claude-monitor --custom "テスト" "これはテストです"
+npx notify-claude-code --custom "テスト" "これはテストです"
 
 # デバッグモード
-npx claude-monitor --debug
+npx notify-claude-code --debug
 ```
 
 macOS設定：システム環境設定 > 通知 > ターミナル > 「通知を許可」をON
