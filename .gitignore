@@ -1,0 +1,46 @@
+# Logs
+logs/
+*.log
+
+# Cache files
+cache/
+*.json.bak
+
+# Reports (may contain sensitive session data)
+reports/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# Environment
+.env
+.venv
+env/
+venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Configuration files with sensitive data
+notification_config.json
+last_used.json
+
+# Temporary files
+*.tmp
+*.temp
