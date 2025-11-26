@@ -39,15 +39,23 @@ class SessionMonitor:
         return None
 
     def get_current_project(self) -> Optional[str]:
-        """現在のプロジェクトパスを取得"""
-        cwd = os.getcwd()
-        config = self.load_config()
+        """現在のプロジェクトパスを取得
 
+        優先順位:
+        1. CLAUDE_PROJECT_PATH環境変数（hookから渡される）
+        2. 現在の作業ディレクトリからの推測
+        """
+        config = self.load_config()
         if not config or 'projects' not in config:
             return None
 
-        # 現在のディレクトリに一致するプロジェクトを探す
-        # 最も長い一致パスを優先（より具体的なプロジェクト）
+        # 1. 環境変数から取得（最優先）
+        env_project_path = os.environ.get('CLAUDE_PROJECT_PATH')
+        if env_project_path and env_project_path in config['projects']:
+            return env_project_path
+
+        # 2. 現在のディレクトリから推測（フォールバック）
+        cwd = os.getcwd()
         matched_projects = []
         for project_path in config['projects'].keys():
             if cwd.startswith(project_path):

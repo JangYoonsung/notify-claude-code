@@ -64,14 +64,22 @@ const notificationScript = join(scriptsDir, "notification_system.py");
 // Parse command line arguments
 const args = process.argv.slice(2);
 
+// Set current working directory as CLAUDE_PROJECT_PATH environment variable
+// This ensures the notification system detects the correct project
+const env = {
+  ...process.env,
+  CLAUDE_PROJECT_PATH: process.cwd(),
+};
+
 // Build the Python command
 const pythonCmd = `python3 "${notificationScript}" ${args.join(" ")}`;
 
 try {
-  // Execute the Python script
+  // Execute the Python script with project path environment variable
   execSync(pythonCmd, {
     stdio: "inherit",
     cwd: scriptsDir,
+    env: env,
   });
 } catch (error: any) {
   // Error already displayed via stdio: 'inherit'
