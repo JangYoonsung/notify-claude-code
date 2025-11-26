@@ -45,16 +45,18 @@ class SessionMonitor:
         1. CLAUDE_PROJECT_PATH環境変数（hookから渡される）
         2. 現在の作業ディレクトリからの推測
         """
+        # 1. 環境変数から取得（最優先）
+        env_project_path = os.environ.get('CLAUDE_PROJECT_PATH')
+        if env_project_path:
+            # 環境変数が設定されている場合は、それを信頼する
+            # .claude.jsonに登録されていない新規プロジェクトでも動作させる
+            return env_project_path
+
+        # 2. 現在のディレクトリから推測（フォールバック）
         config = self.load_config()
         if not config or 'projects' not in config:
             return None
 
-        # 1. 環境変数から取得（最優先）
-        env_project_path = os.environ.get('CLAUDE_PROJECT_PATH')
-        if env_project_path and env_project_path in config['projects']:
-            return env_project_path
-
-        # 2. 現在のディレクトリから推測（フォールバック）
         cwd = os.getcwd()
         matched_projects = []
         for project_path in config['projects'].keys():
@@ -68,15 +70,33 @@ class SessionMonitor:
         return max(matched_projects, key=len)
 
     def get_project_folder(self, project_path: str) -> Optional[Path]:
-        """プロジェクトパスに対応する.claude/projectsフォルダを取得"""
-        # パスを変換: /Users/foo/bar -> -Users-foo-bar
-        # また、.（ドット）も-（ハイフン）に変換される
+        """プロジェクトパスに対応する.claude/projectsフォルダを取得
+
+        サブプロジェクトの場合、親プロジェクトのパスも含まれる可能性がある
+        """
+        # まず、直接的な変換を試す: /Users/foo/bar -> -Users-foo-bar
         folder_name = project_path.replace('/', '-').replace('.', '-')
         project_folder = self.claude_projects / folder_name
 
         if project_folder.exists():
             return project_folder
-        return None
+
+        # サブプロジェクトの可能性を考慮
+        # プロジェクト名（最後のディレクトリ名）で検索
+        project_name = Path(project_path).name
+
+        candidates = []
+        for folder in self.claude_projects.glob(f'*{project_name}*'):
+            # フォルダ名が -project_name で終わるか、-project_name- を含むか確認
+            folder_name_str = folder.name
+            if folder_name_str.endswith(f'-{project_name}'):
+                candidates.append(folder)
+
+        if not candidates:
+            return None
+
+        # 最も短い候補を選択（最も直接的なマッチ）
+        return min(candidates, key=lambda f: len(f.name))
 
     def get_current_session_file(self, project_folder: Path) -> Optional[Path]:
         """現在のセッションのjsonlファイルを取得"""

@@ -1,6 +1,6 @@
 {
   "name": "notify-claude-code",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Claude Code Advanced Notification System - Monitor sessions and deliver notifications about cost, tokens, and code changes",
   "main": "dist/cli.js",
   "bin": {
